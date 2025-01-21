@@ -16,7 +16,7 @@ window.app = {
   onShareLoc,
   onSetSortBy,
   onSetFilterBy,
-  onShowModal,
+  removeLoc,
 }
 
 function onInit() {
@@ -71,7 +71,7 @@ function renderLocs(locs) {
   document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
 }
 
-function onRemoveLoc(locId) {
+function removeLoc(locId) {
   locService
     .remove(locId)
     .then(() => {
@@ -325,13 +325,13 @@ function cleanStats(stats) {
   return cleanedStats
 }
 
-function onShowModal(locId) {
+function onRemoveLoc(locId) {
   const elRemoveModal = document.querySelector('.remove-confirmation-modal')
   elRemoveModal.showModal()
   const elYesBtn = document.querySelector('.remove-btn')
   const elNoBtn = document.querySelector('.cancel-btn')
   elYesBtn.addEventListener('click', () => {
-    onRemoveLoc(locId)
+    removeLoc(locId)
     elRemoveModal.close()
   })
   elNoBtn.addEventListener('click', () => elRemoveModal.close())
