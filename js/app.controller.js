@@ -19,6 +19,8 @@ window.app = {
   removeLoc,
 }
 
+var gUserPos
+
 function onInit() {
   getFilterByFromQueryParams()
   loadAndRenderLocs()
@@ -50,6 +52,7 @@ function renderLocs(locs) {
                 Created: ${utilService.elapsedTime(loc.createdAt)}
                 ${loc.createdAt !== loc.updatedAt ? ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}` : ''}
             </p>
+            <p class="distance-from-user"></p>
             <div class="loc-btns">     
                <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
                <button title="Edit" onclick="app.onUpdateLoc('${loc.id}')">✏️</button>
@@ -63,6 +66,7 @@ function renderLocs(locs) {
   elLocList.innerHTML = strHTML || 'No locs to show'
 
   renderLocStats()
+  setDistance()
 
   if (selectedLocId) {
     const selectedLoc = locs.find((loc) => loc.id === selectedLocId)
@@ -139,6 +143,8 @@ function onPanToUserPos() {
       unDisplayLoc()
       loadAndRenderLocs()
       flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
+      gUserPos = latLng
+      setDistance(gUserPos)
     })
     .catch((err) => {
       console.error('OOPs:', err)
@@ -338,4 +344,29 @@ function onRemoveLoc(locId) {
     elRemoveModal.close()
   })
   elNoBtn.addEventListener('click', () => elRemoveModal.close())
+}
+
+
+function setDistance() {
+  if(!gUserPos) return
+  locService
+    .query().then(res => {
+      const locsPos = res.map(loc => {
+        const lat = loc.geo.lat
+        const lng = loc.geo.lng
+        return { lat, lng }
+      })
+      locsPos.forEach((locPos, idx) => {
+        let distance = utilService.getDistance(gUserPos, locPos, 'k')
+        locService.setDistance(res[idx], distance)
+        renderDistance(res[idx].id, distance)
+      })
+    })
+}
+
+function renderDistance(locId, disatance) {
+  const elLoc = document.querySelector(`[data-id="${locId}"]`)
+  const elLocDistance = elLoc.querySelector('.distance-from-user')
+  elLocDistance.innerHTML = `Disatance: ${disatance}`
+
 }

@@ -32,6 +32,7 @@ export const locService = {
   setSortBy,
   getLocCountByRateMap,
   getLocCountByUpdateMap,
+  setDistance,
 }
 
 function query() {
@@ -185,6 +186,11 @@ function _createLoc(loc) {
   return loc
 }
 
+
+function setDistance(loc, disatance) {
+  loc.disatance = disatance
+  return storageService.put(DB_KEY, loc)
+}
 // unused functions
 // function getEmptyLoc(name = '') {
 //     return {
