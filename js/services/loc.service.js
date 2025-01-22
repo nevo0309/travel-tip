@@ -31,6 +31,7 @@ export const locService = {
   setFilterBy,
   setSortBy,
   getLocCountByRateMap,
+  getLocCountByUpdateMap,
 }
 
 function query() {
@@ -105,7 +106,28 @@ function getLocCountByRateMap() {
     return locCountByRateMap
   })
 }
+function getLocCountByUpdateMap() {
+  const now = Date.now()
+  const ONE_DAY = 1000 * 60 * 60 * 24
 
+  return storageService.query(DB_KEY).then((locs) => {
+    const locCountByUpdateMap = locs.reduce(
+      (map, loc) => {
+        if (!loc.updatedAt || loc.updatedAt === loc.createdAt) {
+          map.never++
+        } else if (now - loc.updatedAt <= ONE_DAY) {
+          map.today++
+        } else {
+          map.past++
+        }
+        return map
+      },
+      { today: 0, past: 0, never: 0 }
+    )
+    locCountByUpdateMap.total = locs.length
+    return locCountByUpdateMap
+  })
+}
 function setSortBy(sortBy = {}) {
   gSortBy = sortBy
   console.log(sortBy)
