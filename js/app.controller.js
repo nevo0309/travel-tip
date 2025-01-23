@@ -4,6 +4,10 @@ import { mapService } from './services/map.service.js'
 
 window.onload = onInit
 
+let gCurrentMode = ''
+let gCurrentGeo = null
+let gCurrentLocId = null
+
 // To make things easier in this project structure
 // functions that are called from DOM are defined on a global app object
 window.app = {
@@ -17,6 +21,8 @@ window.app = {
   onSetSortBy,
   onSetFilterBy,
   removeLoc,
+  onCloseLocModal,
+  onSaveLoc,
 }
 
 var gUserPos
@@ -104,25 +110,19 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-  const locName = prompt('Loc name', geo.address || 'Just a place')
-  if (!locName) return
+  const elModal = document.querySelector('.loc-modal')
+  const elModalTitle = elModal.querySelector('.modal-title')
+  const elLocName = elModal.querySelector('.loc-name')
+  const elLocRate = elModal.querySelector('.loc-rate')
 
-  const loc = {
-    name: locName,
-    rate: +prompt(`Rate (1-5)`, '3'),
-    geo,
-  }
-  locService
-    .save(loc)
-    .then((savedLoc) => {
-      flashMsg(`Added Location (id: ${savedLoc.id})`)
-      utilService.updateQueryParams({ locId: savedLoc.id })
-      loadAndRenderLocs()
-    })
-    .catch((err) => {
-      console.error('OOPs:', err)
-      flashMsg('Cannot add location')
-    })
+  elModalTitle.textContent = 'Add New Location'
+  elLocName.value = geo.address || ''
+  elLocRate.value = 3
+
+  gCurrentMode = 'add'
+  gCurrentGeo = geo
+
+  elModal.showModal()
 }
 
 function loadAndRenderLocs() {
@@ -153,22 +153,77 @@ function onPanToUserPos() {
 }
 
 function onUpdateLoc(locId) {
+  const elModal = document.querySelector('.loc-modal')
+  const elModalTitle = elModal.querySelector('.modal-title')
+  const elLocName = elModal.querySelector('.loc-name')
+  const elLocRate = elModal.querySelector('.loc-rate')
+
   locService.getById(locId).then((loc) => {
-    const rate = prompt('New rate?', loc.rate)
-    if (rate && rate !== loc.rate) {
-      loc.rate = rate
-      locService
-        .save(loc)
-        .then((savedLoc) => {
-          flashMsg(`Rate was set to: ${savedLoc.rate}`)
-          loadAndRenderLocs()
-        })
-        .catch((err) => {
-          console.error('OOPs:', err)
-          flashMsg('Cannot update location')
-        })
-    }
+    elModalTitle.textContent = 'Edit Location'
+    elLocName.value = loc.name
+    elLocRate.value = loc.rate
+
+    gCurrentMode = 'edit'
+    gCurrentLocId = locId
+
+    elModal.showModal()
   })
+}
+
+function onSaveLoc(ev) {
+  ev.preventDefault()
+  const elModal = document.querySelector('.loc-modal')
+  const elLocName = elModal.querySelector('.loc-name')
+  const elLocRate = elModal.querySelector('.loc-rate')
+
+  const locName = elLocName.value.trim()
+  const rate = +elLocRate.value
+
+  if (!locName) return
+
+  if (gCurrentMode === 'add') {
+    // Adding new location
+    const loc = { name: locName, rate, geo: gCurrentGeo }
+    locService
+      .save(loc)
+      .then((savedLoc) => {
+        flashMsg(`Added Location`)
+        utilService.updateQueryParams({ locId: savedLoc.id })
+        loadAndRenderLocs()
+        elModal.close()
+      })
+      .catch((err) => {
+        console.error('OOPs:', err)
+        flashMsg('Cannot add location')
+      })
+  }
+  if (gCurrentMode === 'edit') {
+    // Updating existing location
+    locService
+      .getById(gCurrentLocId)
+      .then((loc) => {
+        const updatedLoc = { ...loc, name: locName, rate }
+        return locService.save(updatedLoc)
+      })
+      .then((savedLoc) => {
+        flashMsg(`Location updated: ${savedLoc.name}`)
+        loadAndRenderLocs()
+        elModal.close()
+      })
+      .catch((err) => {
+        console.error('OOPs:', err)
+        flashMsg('Cannot update location')
+      })
+  }
+}
+
+function onCloseLocModal() {
+  const elModal = document.querySelector('.loc-modal')
+  elModal.close()
+
+  gCurrentMode = ''
+  gCurrentGeo = null
+  gCurrentLocId = null
 }
 
 function onSelectLoc(locId) {
