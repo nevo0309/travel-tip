@@ -66,7 +66,7 @@ function renderLocs(locs) {
   elLocList.innerHTML = strHTML || 'No locs to show'
 
   renderLocStats()
-  setDistance()
+  onSetDistance(locs)
 
   if (selectedLocId) {
     const selectedLoc = locs.find((loc) => loc.id === selectedLocId)
@@ -139,12 +139,12 @@ function onPanToUserPos() {
   mapService
     .getUserPosition()
     .then((latLng) => {
+      gUserPos = latLng
       mapService.panTo({ ...latLng, zoom: 15 })
       unDisplayLoc()
       loadAndRenderLocs()
       flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
-      gUserPos = latLng
-      setDistance(gUserPos)
+
     })
     .catch((err) => {
       console.error('OOPs:', err)
@@ -194,6 +194,11 @@ function displayLoc(loc) {
   el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
   el.querySelector('[name=loc-copier]').value = window.location
   el.classList.add('show')
+
+  if (gUserPos) {
+    const distance = utilService.getDistance(gUserPos, loc.geo)
+    el.querySelector('.loc-distance').innerText = `Distance: ${distance}`
+  }
 
   utilService.updateQueryParams({ locId: loc.id })
 }
@@ -347,21 +352,12 @@ function onRemoveLoc(locId) {
 }
 
 
-function setDistance() {
-  if(!gUserPos) return
-  locService
-    .query().then(res => {
-      const locsPos = res.map(loc => {
-        const lat = loc.geo.lat
-        const lng = loc.geo.lng
-        return { lat, lng }
-      })
-      locsPos.forEach((locPos, idx) => {
-        let distance = utilService.getDistance(gUserPos, locPos, 'k')
-        locService.setDistance(res[idx], distance)
-        renderDistance(res[idx].id, distance)
-      })
-    })
+function onSetDistance(locs) {
+  if (!gUserPos) return
+  locs.forEach(loc => {
+    const distances = utilService.getDistance(gUserPos, loc.geo)
+    renderDistance(loc.id, distances)
+})
 }
 
 function renderDistance(locId, disatance) {

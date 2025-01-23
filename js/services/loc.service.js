@@ -32,7 +32,6 @@ export const locService = {
   setSortBy,
   getLocCountByRateMap,
   getLocCountByUpdateMap,
-  setDistance,
 }
 
 function query() {
@@ -77,6 +76,7 @@ function remove(locId) {
 }
 
 function save(loc) {
+  console.log(loc)
   if (loc.id) {
     loc.updatedAt = Date.now()
     return storageService.put(DB_KEY, loc)
@@ -184,12 +184,6 @@ function _createLoc(loc) {
   loc.id = utilService.makeId()
   loc.createdAt = loc.updatedAt = utilService.randomPastTime()
   return loc
-}
-
-
-function setDistance(loc, disatance) {
-  loc.disatance = disatance
-  return storageService.put(DB_KEY, loc)
 }
 // unused functions
 // function getEmptyLoc(name = '') {
