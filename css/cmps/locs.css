@@ -155,8 +155,7 @@
     padding-block-start: 0;
 }
 
-.loc-modal ,.remove-confirmation-modal button {
-    margin-block-start: 1rem;
+.loc-modal button ,.remove-confirmation-modal button {
     background: hsla(185, 100%, 10%, 1);
     background: hsla(185, 100%, 10%, 1);
     background: linear-gradient(45deg, hsla(185, 100%, 10%, 1) 17%, hsla(12, 49%, 40%, 1) 100%);
@@ -165,10 +164,11 @@
     filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#003135", endColorstr="#964734", GradientType=1);
     border: 1px solid rgba(255, 255, 255, 0.408);
     border-radius: 5px;
-    margin-inline-end: 1rem;
-
+    margin-block-start: 1rem;
+    margin-inline: 1rem;
 }
-.loc-modal,.remove-confirmation-modal  button:hover{
+
+.loc-modal button,.remove-confirmation-modal  button:hover{
     border-color: #204043;
 }
 
