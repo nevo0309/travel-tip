@@ -3,14 +3,31 @@
 @import url(cmps/user-msg.css);
 @import url(cmps/locs.css);
 @import url(cmps/selected-loc.css);
+@import url(setups/typography.css);
 
 @media (min-width: 750px) {
     main {
         display: flex;
         flex-direction: row-reverse;
     }
+
     .locs-container {
         width: 30vw;
     }
-}
 
+    .loc-stats {
+        background: hsla(185, 100%, 10%, 1);
+
+        background: linear-gradient(180deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+        
+        background: -moz-linear-gradient(180deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+        
+        background: -webkit-linear-gradient(180deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+        
+        filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#003135", endColorstr="#964734", GradientType=1 );
+    }
+
+    .pie-container{
+        margin-inline-start: 10rem;
+    }
+}

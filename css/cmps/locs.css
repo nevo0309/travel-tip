@@ -1,18 +1,48 @@
 .locs-container {
-    background-color: var(--bg3);
-    padding: 0.5em;
-    min-height: 100vh;
+    background: hsla(185, 100%, 10%, 1);
+
+    background: linear-gradient(270deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+
+    background: -moz-linear-gradient(270deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+
+    background: -webkit-linear-gradient(270deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#003135", endColorstr="#964734", GradientType=1);
+    padding-inline: 0.5em;
+    height: 100vh;
 }
 
 .loc-list {
     list-style: none;
     padding: 0;
+    padding-inline-end: 0.5rem;
+    margin: 0;
+    height: 75%;
+    overflow-y: scroll;
 }
 
+
+.loc-list::-webkit-scrollbar {
+    height: 10px;
+    scrollbar-width: thin;
+}
+
+.loc-list::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 7px;
+}
+
+.loc-list::-webkit-scrollbar-track {
+    background-color: #e0e0e044;
+    border-radius: 7px;
+}
+
+
 .loc-list li {
-    padding-bottom: .2em;
+    padding-block: .2em;
     border-bottom: 1px solid #222;
 }
+
 .loc-list li h4 {
     display: flex;
     justify-content: space-between;
@@ -22,7 +52,7 @@
     color: var(--color3);
 }
 
-.loc-list li.active .muted{
+.loc-list li.active .muted {
     color: var(--color4);
 }
 
@@ -40,24 +70,35 @@
     text-align: end;
 }
 
+.fa-solid {
+    background-color: transparent;
+}
+
+.search-btn {
+    font-size: 1.1rem;
+}
+
 .btn-user-pos {
-    background-color: var(--bg2);
-    background-image: url(../../img/user-loc.png);
+    color: aliceblue;
+    background-color: transparent;
     background-size: cover;
     width: 2em;
     height: 2em;
+    font-size: 1.2rem;
 }
+
 .btn-user-pos:hover {
     background-color: whitesmoke;
 }
 
 .loc-filter {
-    background-color: var(--bg1);
-    padding: 0.3em;
+    background-color: #ffffff2b;
+    padding: 0.7em;
+    border-radius: 5px;
 }
 
 .loc-filter input[type=text] {
-    width: 98%;
+    width: 96%;
     margin-bottom: .5em;
 }
 
@@ -67,6 +108,28 @@
     height: 120px;
     border-radius: 50%;
     /* background-image: conic-gradient(orange 0%, orange 64%, blue 64%, blue 81%, black 81%, black 100%); */
+}
+
+.loc-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: hsla(185, 100%, 10%, 1);
+
+    background: linear-gradient(90deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+
+    background: -moz-linear-gradient(90deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+
+    background: -webkit-linear-gradient(90deg, hsla(185, 100%, 10%, 1) 0%, hsla(12, 49%, 40%, 1) 70%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#003135", endColorstr="#964734", GradientType=1);
+}
+
+.pie-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-inline-start: 3rem;
 }
 
 .loc-stats ul {
@@ -81,4 +144,51 @@
     width: 1em;
     height: 1em;
     margin-inline-end: 0.3em;
+}
+
+.loc-modal,
+.remove-confirmation-modal {
+    text-align: center;
+    background-color: #204043;
+    color: white;
+    border-radius: 10px;
+    padding-block-start: 0;
+}
+
+.loc-modal ,.remove-confirmation-modal button {
+    margin-block-start: 1rem;
+    background: hsla(185, 100%, 10%, 1);
+    background: hsla(185, 100%, 10%, 1);
+    background: linear-gradient(45deg, hsla(185, 100%, 10%, 1) 17%, hsla(12, 49%, 40%, 1) 100%);
+    background: -moz-linear-gradient(45deg, hsla(185, 100%, 10%, 1) 17%, hsla(12, 49%, 40%, 1) 100%);
+    background: -webkit-linear-gradient(45deg, hsla(185, 100%, 10%, 1) 17%, hsla(12, 49%, 40%, 1) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#003135", endColorstr="#964734", GradientType=1);
+    border: 1px solid rgba(255, 255, 255, 0.408);
+    border-radius: 5px;
+    margin-inline-end: 1rem;
+
+}
+.loc-modal,.remove-confirmation-modal  button:hover{
+    border-color: #204043;
+}
+
+.loc-modal input {
+    margin-inline-end: 1rem;
+    color: rgb(179, 179, 179);
+}
+
+.loc-modal label {
+    font-weight: bold;
+}
+
+.loc-modal::backdrop {
+    background: hsla(185, 100%, 10%, 0.5);
+
+    background: linear-gradient(90deg, hsla(185, 100%, 10%, 0.5) 0%, hsla(12, 49%, 40%, 0.5) 70%);
+
+    background: -moz-linear-gradient(90deg, hsla(185, 100%, 10%, 0.5) 0%, hsla(12, 49%, 40%, 0.5) 70%);
+
+    background: -webkit-linear-gradient(90deg, hsla(185, 100%, 10%, 0.3) 0%, hsla(12, 49%, 40%, 0.3) 70%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#003135", endColorstr="#964734", GradientType=1);
 }

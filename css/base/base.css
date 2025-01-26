@@ -1,24 +1,47 @@
 body {
-    background-color: var(--bg1);
+    background-color:  #003135;
     color: #eee;
     overflow-x: hidden;
+    font-family: doris;
 }
 
 header {
-    background-color: var(--bg2);
+    background: hsla(185, 100%, 10%, 1);
+
+    background: linear-gradient(0deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+    
+    background: -moz-linear-gradient(0deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+    
+    background: -webkit-linear-gradient(0deg, hsla(185, 100%, 10%, 1) 23%, hsla(12, 49%, 40%, 1) 100%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#003135", endColorstr="#964734", GradientType=1 );
     color: aliceblue;
     padding: 0.3em;
+    border-radius: 5px;
 }
 
 header h1 {
-    margin: 0;
+   text-align: center;
+    margin-block-end: 1rem;
+    font-size: 2.5em;
+    
 }
 
 input[type=text],input[type=number] {
     line-height: 2em;
-    background-color: var(--color1);
+    background-color: transparent;
+    outline: 1px solid white;
+    border-radius: 10px;
     border: 0;
+    padding-inline-start: 0.7rem;
+    font-family: doris;
 }
+
+input[type=text]:focus{
+    color: white;
+} 
+
+
 
 button {
     color: whitesmoke;
@@ -32,7 +55,7 @@ button {
 }
 
 button:hover {
-    color: var(--color2);
+    color: rgb(183, 178, 178);
     background-color: #111;
 }
 
