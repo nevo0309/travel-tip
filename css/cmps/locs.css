@@ -181,7 +181,7 @@
     font-weight: bold;
 }
 
-.loc-modal::backdrop {
+.loc-modal::backdrop ,.remove-confirmation-modal::backdrop{
     background: hsla(185, 100%, 10%, 0.5);
 
     background: linear-gradient(90deg, hsla(185, 100%, 10%, 0.5) 0%, hsla(12, 49%, 40%, 0.5) 70%);
